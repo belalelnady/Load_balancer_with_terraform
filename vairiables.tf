@@ -3,7 +3,6 @@ variable "subnet_data" {
     cidr              = string
     availability_zone = string
     map_value         = bool
-    name              = string
   }))
 
 }
