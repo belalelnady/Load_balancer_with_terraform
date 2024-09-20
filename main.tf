@@ -30,6 +30,14 @@ module "public_routing_table" {
   routing_table_name = "public-routing-table"
 }
 
+# public assossiiation
+module "rt_public_assosiation" {
+  source         = "./network/route_t_association"
+  subnet_id_list = module.subnets.puplic_subnets_id
+  rt_id          = module.public_routing_table.route_id
+}
+
+
 #private routing table
 module "private_routing_tables" {
   source             = "./network/route_table"
@@ -38,17 +46,46 @@ module "private_routing_tables" {
   routing_table_name = "private-routing-table"
 }
 
-# public assossiiation
-module "rt_public_assosiation" {
-  source         = "./network/route_t_association"
-  subnet_id_list = module.subnets.puplic_subnets_id
-  rt_id          = module.public_routing_table.route_id
-}
-
 # private assossiiation
 module "rt_private_assosiation" {
   source         = "./network/route_t_association"
   subnet_id_list = module.subnets.private_subnets_id
   rt_id          = module.private_routing_tables.route_id
 }
+
+#-------------security group--------
+module "security_groups" {
+  source = "./network/security_group"
+  vpc_id = module.vpc.vpc-id
+}
+
+
+#------key-pair----
+module "key_pair" {
+  source   = "./key-pair"
+  key_name = "lb"
+}
+
+# -------instances---
+module "instances" {
+  source                    = "./instances"
+  ami_id                    = "ami-0c94855ba95c71c99" 
+  instance_type             = "t2.micro"
+  public_subnet_id          = module.subnets.puplic_subnets_id[0]
+  private_subnet_1_id       = module.subnets.private_subnets_id[0]
+  private_subnet_2_id       = module.subnets.private_subnets_id[1]
+  bastion_sg_id             = module.security_groups.bastion_sg_id
+  private_sg_id             = module.security_groups.private_sg_id
+  key_name                  = module.key_pair.key_name
+}
+# -------------------LB--------------
+module "load_balancer" {
+  source                = "./load_balancer"
+  vpc_id                = module.vpc.vpc-id
+  public_subnets        = module.subnets.puplic_subnets_id
+  alb_sg_id             = module.security_groups.alb_sg_id
+  private_instance_1_id = module.subnets.private_subnets_id[0]
+  private_instance_2_id = module.subnets.private_subnets_id[1]
+}
+
 
