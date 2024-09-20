@@ -9,3 +9,8 @@ module "subnets" {
   vpc-id = module.vpc.vpc-id
   subnet_data = var.subnet_data
 }
+
+module "internet_gw" {
+  source = "./internet_GW"
+  
+}
