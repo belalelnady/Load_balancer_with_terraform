@@ -69,7 +69,7 @@ module "key_pair" {
 # -------instances---
 module "instances" {
   source                    = "./instances"
-  ami_id                    = "ami-0c94855ba95c71c99" 
+  ami_id                    = "ami-0a0e5d9c7acc336f1" 
   instance_type             = "t2.micro"
   public_subnet_id          = module.subnets.puplic_subnets_id[0]
   private_subnet_1_id       = module.subnets.private_subnets_id[0]
@@ -84,8 +84,8 @@ module "load_balancer" {
   vpc_id                = module.vpc.vpc-id
   public_subnets        = module.subnets.puplic_subnets_id
   alb_sg_id             = module.security_groups.alb_sg_id
-  private_instance_1_id = module.subnets.private_subnets_id[0]
-  private_instance_2_id = module.subnets.private_subnets_id[1]
+  private_instance_1_id = module.instances.private_instance_1_id
+  private_instance_2_id = module.instances.private_instance_2_id
 }
 
 

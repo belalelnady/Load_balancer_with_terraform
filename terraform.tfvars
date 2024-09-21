@@ -4,7 +4,7 @@ subnet_data = {
     availability_zone = "us-east-1a"
     map_value         = true
   }
-  public-subnet1 = {
+  public-subnet2 = {
     cidr              = "10.0.2.0/24"
     availability_zone = "us-east-1b"
     map_value         = true
