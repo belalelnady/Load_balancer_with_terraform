@@ -6,11 +6,3 @@ variable "subnet_data" {
   }))
 
 }
-
-# variable "private_instances_data" {
-#     type        = map(object({
-#     ami_id          = string
-#     instance_type   = string
-#     subnet_name = string
-#   }))
-# }

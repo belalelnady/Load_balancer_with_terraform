@@ -8,6 +8,16 @@ resource "aws_instance" "bastion" {
   tags = {
     Name = "Bastion Host"
   }
+
+   provisioner "local-exec" {
+    command = <<-EOT
+      #!/bin/bash
+      chmod 600 $HOME/.ssh/${var.key_name}.pem
+      sleep 100
+      scp -o StrictHostKeyChecking=no -i /home/belal/.ssh/${var.key_name}.pem  /home/belal/.ssh/${var.key_name}.pem ubuntu@${self.public_ip}:/home/ubuntu/.ssh 
+    EOT
+  }
+  
 }
 
 resource "aws_instance" "private_instance_1" {
@@ -17,11 +27,7 @@ resource "aws_instance" "private_instance_1" {
   security_groups       = [var.private_sg_id]
   key_name              = var.key_name
 
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo apt update -y
-              sudo apt install nginx -y
-              EOF
+  user_data = "${file("scripts/install-nginx.sh")}"
 
   tags = {
     Name = "Private Instance 1"
@@ -35,36 +41,9 @@ resource "aws_instance" "private_instance_2" {
   security_groups       = [var.private_sg_id]
   key_name              = var.key_name
 
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo apt update -y
-              sudo apt install nginx -y
-              EOF
+  user_data = "${file("scripts/install-nginx.sh")}"
 
   tags = {
     Name = "Private Instance 2"
   }
 }
-
-
-
-# resource "aws_instance" "private_instances" {
-#   for_each            = var.private_data
-
-#   ami                 = each.value.ami_id
-#   instance_type      = each.value.instance_type
-#   subnet_id          = each.value.subnet_key[].id
-#   security_groups    = [var.private_sg_id]
-#   key_name           = var.key_name
-
-#   user_data = <<-EOF
-#               #!/bin/bash
-#               sudo apt update -y
-#               sudo apt install nginx -y
-#               EOF
-
-#   tags = {
-#     Name = each.key
-#   }
-# }
-
