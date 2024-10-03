@@ -77,6 +77,7 @@ module "instances" {
   bastion_sg_id             = module.security_groups.bastion_sg_id
   private_sg_id             = module.security_groups.private_sg_id
   key_name                  = module.key_pair.key_name
+  depends_on = [ module.key_pair , module.internet_gw , module.nat]
 }
 # -------------------LB--------------
 module "load_balancer" {
