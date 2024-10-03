@@ -66,6 +66,8 @@ This Terraform project sets up a complete AWS infrastructure including a VPC, pu
 │       ├── main.tf
 │       ├── outputs.tf
 │       └── variables.tf
+├── scripts
+│   └── install-nginx.sh
 ├── provider.tf
 ├── terraform.tfstate
 ├── terraform.tfstate.backup
