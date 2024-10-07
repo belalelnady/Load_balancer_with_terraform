@@ -1,7 +1,7 @@
 
 ```markdown
 # AWS Infrastructure with Terraform
-
+![Terraform project](https://github.com/user-attachments/assets/145c7a33-9951-466b-9f50-de80b9bd8a79)
 This Terraform project sets up a complete AWS infrastructure including a VPC, public and private subnets, an application load balancer, NAT gateway, and EC2 instances configured as a bastion host and private servers running Nginx. The load balancer is configured to balance traffic between the private instances.
 
 ## **Infrastructure Components**
